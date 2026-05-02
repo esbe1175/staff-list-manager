@@ -1,6 +1,7 @@
 import '@radix-ui/themes/styles.css'
 import { Theme } from '@radix-ui/themes'
 import { useEffect, useMemo, useState } from 'react'
+import { flushSync } from 'react-dom'
 import { EditorPanel } from './components/EditorPanel'
 import { PagesPanel } from './components/PagesPanel'
 import { PrintPreview } from './components/PrintPreview'
@@ -32,8 +33,8 @@ function DesktopApp() {
   const visiblePageNumber = Math.min(selectedPageNumber, pageCount)
 
   function printDocument() {
-    setIsPrintRenderEnabled(true)
-    window.requestAnimationFrame(() => window.print())
+    flushSync(() => setIsPrintRenderEnabled(true))
+    window.setTimeout(() => window.print(), 50)
   }
 
   function createNewDocument() {

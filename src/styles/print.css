@@ -26,7 +26,9 @@
   .app-shell,
   .workspace {
     display: block;
+    height: auto;
     min-height: 0;
+    overflow: visible;
   }
 
   .canvas-area {
@@ -42,6 +44,7 @@
     width: 210mm;
     height: auto;
     padding: 0;
+    overflow: visible;
   }
 
   .print-page-stack {

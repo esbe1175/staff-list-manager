@@ -10,18 +10,31 @@ const seenStaffImageIds = new Set<string>()
 
 type A4PageProps = {
   document: StaffDocument
+  forceImages?: boolean
   page: PrintPage
   pageCount: number
   scale?: number
 }
 
-const StaffCard = memo(function StaffCard({ staff }: { staff: StaffMember }) {
+const StaffCard = memo(function StaffCard({
+  forceImages = false,
+  staff,
+}: {
+  forceImages?: boolean
+  staff: StaffMember
+}) {
   const frameRef = useRef<HTMLDivElement>(null)
   const [shouldAttachImage, setShouldAttachImage] = useState(() =>
-    seenStaffImageIds.has(staff.id),
+    forceImages || seenStaffImageIds.has(staff.id),
   )
+  const imageIsAttached = forceImages || shouldAttachImage
 
   useEffect(() => {
+    if (forceImages) {
+      seenStaffImageIds.add(staff.id)
+      return
+    }
+
     if (!staff.imageDataUrl || shouldAttachImage) {
       return
     }
@@ -46,7 +59,7 @@ const StaffCard = memo(function StaffCard({ staff }: { staff: StaffMember }) {
     observer.observe(frame)
 
     return () => observer.disconnect()
-  }, [shouldAttachImage, staff.id, staff.imageDataUrl])
+  }, [forceImages, shouldAttachImage, staff.id, staff.imageDataUrl])
 
   return (
     <article className="staff-card">
@@ -54,7 +67,7 @@ const StaffCard = memo(function StaffCard({ staff }: { staff: StaffMember }) {
         className={`staff-image-frame ${staff.isPraktikant ? 'is-praktikant' : ''}`}
         ref={frameRef}
       >
-        {shouldAttachImage && staff.imageDataUrl ? (
+        {imageIsAttached && staff.imageDataUrl ? (
           <img alt="" decoding="async" height="512" src={staff.imageDataUrl} width="512" />
         ) : (
           <div className="staff-image-placeholder">{staff.name.slice(0, 1)}</div>
@@ -66,7 +79,13 @@ const StaffCard = memo(function StaffCard({ staff }: { staff: StaffMember }) {
   )
 })
 
-export function A4Page({ document, page, pageCount, scale = 1 }: A4PageProps) {
+export function A4Page({
+  document,
+  forceImages = false,
+  page,
+  pageCount,
+  scale = 1,
+}: A4PageProps) {
   const subtitle = document.useAutoDateSubtitle ? autoSubtitle(document.locale) : document.subtitle
 
   return (
@@ -95,7 +114,7 @@ export function A4Page({ document, page, pageCount, scale = 1 }: A4PageProps) {
             {section.rows.map((row, rowIndex) => (
               <div className="staff-row" key={`${section.id}-${rowIndex}`}>
                 {row.map((staff) => (
-                  <StaffCard staff={staff} key={staff.id} />
+                  <StaffCard forceImages={forceImages} staff={staff} key={staff.id} />
                 ))}
               </div>
             ))}

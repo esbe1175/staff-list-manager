@@ -85,7 +85,13 @@ export function PrintPreview({
       {isPrintRenderEnabled ? (
         <div className="print-page-stack">
           {pages.map((page) => (
-            <A4Page document={document} page={page} pageCount={pages.length} key={page.pageNumber} />
+            <A4Page
+              document={document}
+              forceImages
+              page={page}
+              pageCount={pages.length}
+              key={page.pageNumber}
+            />
           ))}
         </div>
       ) : null}
