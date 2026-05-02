@@ -37,8 +37,8 @@ export const translations = {
     confirmDeleteSection: 'Er du helt sikker på, at du vil slette denne sektion og alle medarbejdere i den?',
     confirmDeleteStaff: 'Er du helt sikker på, at du vil slette denne medarbejder?',
     confirmNewDocument: 'Er du sikker på, at du vil oprette et nyt dokument? Alle ændringer, der ikke er gemt, går tabt.',
-    mobileUnsupportedTitle: 'Brug en computer',
-    mobileUnsupportedBody: 'Staff List Manager er lavet til desktop med mus eller trackpad, fordi A4-layout, billeder og print kræver præcis plads. Åbn appen på en computer for at redigere og printe.',
+    mobileUnsupportedTitle: 'Skærmen er for lille',
+    mobileUnsupportedBody: 'Staff List Manager er lavet til desktop med god skærmplads, fordi A4-layout, billeder og print kræver præcis plads. Åbn appen på en computer, eller gør browservinduet større, for at redigere og printe.',
   },
   en: {
     appName: 'Staff List Manager',
@@ -76,8 +76,8 @@ export const translations = {
     confirmDeleteSection: 'Are you absolutely certain you want to delete this section and all staff inside it?',
     confirmDeleteStaff: 'Are you absolutely certain you want to delete this staff member?',
     confirmNewDocument: 'Are you sure you want to create a new document? Any unsaved changes will be lost.',
-    mobileUnsupportedTitle: 'Use a desktop computer',
-    mobileUnsupportedBody: 'Staff List Manager is built for desktop editing with a mouse or trackpad because A4 layout, images, and printing need precise space. Open the app on a computer to edit and print.',
+    mobileUnsupportedTitle: 'The screen is too small',
+    mobileUnsupportedBody: 'Staff List Manager is built for desktop editing with enough screen space because A4 layout, images, and printing need precision. Open the app on a computer, or make the browser window larger, to edit and print.',
   },
 } satisfies Record<Locale, Record<string, string>>
 
