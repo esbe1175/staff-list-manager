@@ -1,0 +1,68 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body,
+  #root {
+    width: 210mm;
+    min-width: 210mm;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
+
+  .toolbar,
+  .editor-panel,
+  .pages-panel,
+  .status-bar,
+  .single-page-frame,
+  .page-chevron {
+    display: none !important;
+  }
+
+  .app-shell,
+  .workspace {
+    display: block;
+    min-height: 0;
+  }
+
+  .canvas-area {
+    display: block;
+    width: 210mm;
+    padding: 0;
+    overflow: visible;
+    background: white;
+  }
+
+  .single-preview {
+    display: block;
+    width: 210mm;
+    height: auto;
+    padding: 0;
+  }
+
+  .print-page-stack {
+    display: block;
+    width: 210mm;
+    margin: 0;
+  }
+
+  .a4-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 14mm !important;
+    transform: none !important;
+    box-shadow: none !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .a4-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+}
