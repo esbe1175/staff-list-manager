@@ -274,13 +274,18 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   border: 1px solid #dbe1ea;
   border-radius: 8px;
   padding: 10px 12px;
   background: white;
   color: var(--app-ink);
   text-align: left;
+}
+
+.section-list-item.dragging {
+  opacity: 0.72;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
 }
 
 .section-list-item.selected {
@@ -297,23 +302,65 @@ select {
   font-size: 12px;
 }
 
+.section-drag-handle,
+.section-edit-button {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.section-drag-handle:hover,
+.section-edit-button:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+  color: var(--app-ink);
+}
+
+.section-drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.section-drag-handle:active {
+  cursor: grabbing;
+}
+
+.section-title-block {
+  min-width: 0;
+  flex: 1;
+}
+
+.section-title-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+}
+
 .section-name-input {
   width: 100%;
   border: 0;
-  padding: 0;
+  border-bottom: 1px solid transparent;
+  padding: 0 0 1px;
   background: transparent;
   color: var(--app-ink);
   font-weight: 700;
   outline: none;
 }
 
+.section-title-row:hover .section-name-input,
 .section-name-input:focus {
+  border-bottom-color: var(--app-ink);
   color: var(--app-ink);
-}
-
-.section-list-item > div:first-child {
-  min-width: 0;
-  flex: 1;
 }
 
 .section-controls {
@@ -406,7 +453,7 @@ select {
 .staff-tile img,
 .staff-tile-placeholder {
   width: 60px;
-  height: 80px;
+  height: 75px;
   border-radius: 6px;
 }
 
@@ -579,19 +626,19 @@ select {
 
 .staff-card {
   width: var(--card-width-mm, 27mm);
-  height: var(--card-height-mm, 44mm);
+  height: var(--card-height-mm, 42mm);
   display: grid;
-  grid-template-rows: var(--image-height-mm, 30.7mm) 5.8mm 4.4mm minmax(0, 1fr);
+  grid-template-rows: var(--image-height-mm, 30mm) 6.2mm 4.6mm minmax(0, 1fr);
   justify-items: center;
   align-items: start;
-  gap: 0.6mm;
+  gap: 0.75mm;
   text-align: center;
   break-inside: avoid;
 }
 
 .staff-image-frame {
-  width: var(--image-width-mm, 23mm);
-  height: var(--image-height-mm, 30.7mm);
+  width: var(--image-width-mm, 24mm);
+  height: var(--image-height-mm, 30mm);
   border-radius: 1.7mm;
   overflow: hidden;
   border: 0;
@@ -676,20 +723,25 @@ select {
 }
 
 .a4-page.is-compact-layout .staff-card {
-  grid-template-rows: var(--image-height-mm) minmax(2mm, 1fr) minmax(1.8mm, 1fr);
-  gap: 0.15mm;
+  grid-template-rows: var(--image-height-mm) minmax(2.4mm, 1fr) minmax(2.1mm, 1fr);
+  gap: 0.35mm;
 }
 
 .a4-page.is-compact-layout .staff-card strong {
-  font-size: 1.7mm;
+  font-size: 1.95mm;
   line-height: 1;
   min-height: 0;
 }
 
 .a4-page.is-compact-layout .staff-card span {
-  font-size: 1.25mm;
+  font-size: 1.55mm;
   line-height: 1;
   min-height: 0;
+}
+
+.a4-page.is-compact-layout .staff-card .staff-job-title.is-praktikant-title {
+  font-size: 1.7mm;
+  font-weight: 800;
 }
 
 .a4-footer {

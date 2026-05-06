@@ -16,6 +16,7 @@ type DocumentState = {
   updateSectionName: (sectionId: string, name: string) => void
   removeSection: (sectionId: string) => void
   moveSection: (sectionId: string, direction: -1 | 1) => void
+  reorderSection: (activeSectionId: string, overSectionId: string) => void
   selectSection: (sectionId: string) => void
   selectStaff: (sectionId: string, staffId: string) => void
   addStaffToSection: (sectionId: string, staff: StaffMember[]) => void
@@ -120,6 +121,25 @@ export const useDocumentStore = create<DocumentState>((set, get) => {
 
         const [section] = sections.splice(currentIndex, 1)
         sections.splice(nextIndex, 0, section)
+
+        return { document: { ...document, sections } }
+      }),
+    reorderSection: (activeSectionId, overSectionId) =>
+      set(({ document }) => {
+        if (activeSectionId === overSectionId) {
+          return { document }
+        }
+
+        const sections = [...document.sections]
+        const activeIndex = sections.findIndex((section) => section.id === activeSectionId)
+        const overIndex = sections.findIndex((section) => section.id === overSectionId)
+
+        if (activeIndex < 0 || overIndex < 0) {
+          return { document }
+        }
+
+        const [section] = sections.splice(activeIndex, 1)
+        sections.splice(overIndex, 0, section)
 
         return { document: { ...document, sections } }
       }),

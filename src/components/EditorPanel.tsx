@@ -1,4 +1,20 @@
-import { PlusIcon, TrashIcon, UploadIcon } from '@radix-ui/react-icons'
+import { DragHandleDots2Icon, Pencil1Icon, PlusIcon, TrashIcon, UploadIcon } from '@radix-ui/react-icons'
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import type { DragEndEvent } from '@dnd-kit/core'
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { Badge, Box, Button, Checkbox, Flex, Heading, Text, TextField } from '@radix-ui/themes'
 import { memo, useEffect, useRef, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
@@ -8,7 +24,7 @@ import { nameFromFilename } from '../lib/filenameParsing'
 import { optimizeStaffImage } from '../lib/imageProcessing'
 import { sortStaffForPrint } from '../lib/staffSorting'
 import { useDocumentStore } from '../state/documentStore'
-import type { StaffMember } from '../types/document'
+import type { StaffMember, StaffSection } from '../types/document'
 
 type StaffTileProps = {
   isSelected: boolean
@@ -61,7 +77,7 @@ const EditorStaffTile = memo(function EditorStaffTile({
         <img
           alt=""
           decoding="async"
-          height="80"
+          height="75"
           loading="lazy"
           src={imageSource}
           width="60"
@@ -75,6 +91,105 @@ const EditorStaffTile = memo(function EditorStaffTile({
   )
 })
 
+type SectionListItemProps = {
+  canMoveDown: boolean
+  canMoveUp: boolean
+  canRemove: boolean
+  deleteLabel: string
+  editLabel: string
+  dragLabel: string
+  isSelected: boolean
+  onDelete: () => void
+  onMoveDown: () => void
+  onMoveUp: () => void
+  onNameChange: (name: string) => void
+  onSelect: () => void
+  section: StaffSection
+}
+
+function SectionListItem({
+  canMoveDown,
+  canMoveUp,
+  canRemove,
+  deleteLabel,
+  editLabel,
+  dragLabel,
+  isSelected,
+  onDelete,
+  onMoveDown,
+  onMoveUp,
+  onNameChange,
+  onSelect,
+  section,
+}: SectionListItemProps) {
+  const nameInputRef = useRef<HTMLInputElement>(null)
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: section.id,
+  })
+
+  function selectTitle() {
+    onSelect()
+    nameInputRef.current?.focus()
+    nameInputRef.current?.select()
+  }
+
+  return (
+    <div
+      className={`section-list-item ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+    >
+      <button
+        aria-label={dragLabel}
+        className="section-drag-handle"
+        type="button"
+        {...attributes}
+        {...listeners}
+      >
+        <DragHandleDots2Icon />
+      </button>
+      <div className="section-title-block">
+        <div className="section-title-row">
+          <input
+            aria-label={editLabel}
+            className="section-name-input"
+            ref={nameInputRef}
+            value={section.name}
+            onChange={(event) => onNameChange(event.target.value)}
+            onFocus={onSelect}
+          />
+          <button
+            aria-label={editLabel}
+            className="section-edit-button"
+            type="button"
+            onClick={selectTitle}
+          >
+            <Pencil1Icon />
+          </button>
+        </div>
+        <span>{section.staff.length} personer</span>
+      </div>
+      <div className="section-controls">
+        <button disabled={!canMoveUp} type="button" onClick={onMoveUp}>
+          ↑
+        </button>
+        <button disabled={!canMoveDown} type="button" onClick={onMoveDown}>
+          ↓
+        </button>
+        <button
+          aria-label={deleteLabel}
+          className="section-delete-button"
+          disabled={!canRemove}
+          type="button"
+          onClick={onDelete}
+        >
+          <TrashIcon />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export function EditorPanel() {
   const {
     document,
@@ -85,6 +200,7 @@ export function EditorPanel() {
     updateSectionName,
     removeSection,
     moveSection,
+    reorderSection,
     selectSection,
     selectStaff,
     addStaffToSection,
@@ -98,6 +214,10 @@ export function EditorPanel() {
     null
   const selectedStaff =
     selectedSection?.staff.find((staff) => staff.id === selectedStaffId) ?? null
+  const sectionDragSensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  )
 
   function confirmRemoveSection(sectionId: string) {
     if (window.confirm(label('confirmDeleteSection'))) {
@@ -108,6 +228,14 @@ export function EditorPanel() {
   function confirmRemoveStaff(staffId: string) {
     if (window.confirm(label('confirmDeleteStaff'))) {
       removeStaff(staffId)
+    }
+  }
+
+  function handleSectionDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+
+    if (over && active.id !== over.id) {
+      reorderSection(String(active.id), String(over.id))
     }
   }
 
@@ -163,17 +291,6 @@ export function EditorPanel() {
             onChange={(event) => updateDocument({ title: event.target.value })}
           />
         </label>
-        <label className="check-row">
-          <Checkbox
-            checked={document.compactLayout}
-            onCheckedChange={(checked) =>
-              updateDocument({
-                compactLayout: checked === true,
-              })
-            }
-          />
-          <Text size="2">{label('compactLayout')}</Text>
-        </label>
         <label className="field">
           <Text as="span" size="2">
             {label('subtitle')}
@@ -208,6 +325,17 @@ export function EditorPanel() {
             onChange={(event) => updateDocument({ primaryColor: event.target.value })}
           />
         </label>
+        <label className="check-row">
+          <Checkbox
+            checked={document.compactLayout}
+            onCheckedChange={(checked) =>
+              updateDocument({
+                compactLayout: checked === true,
+              })
+            }
+          />
+          <Text size="2">{label('compactLayout')}</Text>
+        </label>
       </section>
 
       <section className="editor-section">
@@ -218,46 +346,37 @@ export function EditorPanel() {
             {label('addSection')}
           </Button>
         </Flex>
-        <div className="section-list">
-          {document.sections.map((section, index) => (
-            <div
-              className={`section-list-item ${section.id === selectedSection?.id ? 'selected' : ''}`}
-              key={section.id}
-            >
-              <div>
-                <input
-                  aria-label={label('sectionName')}
-                  className="section-name-input"
-                  value={section.name}
-                  onChange={(event) => updateSectionName(section.id, event.target.value)}
-                  onFocus={() => selectSection(section.id)}
+        <DndContext
+          collisionDetection={closestCenter}
+          sensors={sectionDragSensors}
+          onDragEnd={handleSectionDragEnd}
+        >
+          <SortableContext
+            items={document.sections.map((section) => section.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="section-list">
+              {document.sections.map((section, index) => (
+                <SectionListItem
+                  canMoveDown={index < document.sections.length - 1}
+                  canMoveUp={index > 0}
+                  canRemove={document.sections.length > 1}
+                  deleteLabel={label('delete')}
+                  dragLabel={label('dragSection')}
+                  editLabel={label('editSectionName')}
+                  isSelected={section.id === selectedSection?.id}
+                  key={section.id}
+                  section={section}
+                  onDelete={() => confirmRemoveSection(section.id)}
+                  onMoveDown={() => moveSection(section.id, 1)}
+                  onMoveUp={() => moveSection(section.id, -1)}
+                  onNameChange={(name) => updateSectionName(section.id, name)}
+                  onSelect={() => selectSection(section.id)}
                 />
-                <span>{section.staff.length} personer</span>
-              </div>
-              <div className="section-controls">
-                <button disabled={index === 0} type="button" onClick={() => moveSection(section.id, -1)}>
-                  ↑
-                </button>
-                <button
-                  disabled={index === document.sections.length - 1}
-                  type="button"
-                  onClick={() => moveSection(section.id, 1)}
-                >
-                  ↓
-                </button>
-                <button
-                  aria-label={label('delete')}
-                  className="section-delete-button"
-                  disabled={document.sections.length < 2}
-                  type="button"
-                  onClick={() => confirmRemoveSection(section.id)}
-                >
-                  <TrashIcon />
-                </button>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       </section>
 
       <section className="editor-section">
@@ -268,15 +387,17 @@ export function EditorPanel() {
           <Text size="2">{selectedSection ? label('dropHint') : label('addSectionFirst')}</Text>
         </Box>
         <div className="staff-grid-editor">
-          {selectedSection ? sortStaffForPrint(selectedSection.staff, document.locale).map((staff) => (
-            <EditorStaffTile
-              isSelected={staff.id === selectedStaffId}
-              key={staff.id}
-              labelPraktikant={label('praktikant')}
-              staff={staff}
-              onSelect={() => selectStaff(selectedSection.id, staff.id)}
-            />
-          )) : null}
+          {selectedSection
+            ? sortStaffForPrint(selectedSection.staff, document.locale).map((staff) => (
+                <EditorStaffTile
+                  isSelected={staff.id === selectedStaffId}
+                  key={staff.id}
+                  labelPraktikant={label('praktikant')}
+                  staff={staff}
+                  onSelect={() => selectStaff(selectedSection.id, staff.id)}
+                />
+              ))
+            : null}
         </div>
       </section>
 

@@ -1,7 +1,7 @@
-const staffImageWidthPx = 384
-const staffImageHeightPx = 512
+const staffImageWidthPx = 400
+const staffImageHeightPx = 500
 const thumbnailImageWidthPx = 96
-const thumbnailImageHeightPx = 128
+const thumbnailImageHeightPx = 120
 const outputQuality = 0.86
 const thumbnailQuality = 0.78
 

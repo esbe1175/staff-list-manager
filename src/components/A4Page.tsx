@@ -76,7 +76,7 @@ const StaffCard = memo(function StaffCard({
         ref={frameRef}
       >
         {imageIsAttached && staff.imageDataUrl ? (
-          <img alt="" decoding="async" height="512" src={staff.imageDataUrl} width="384" />
+          <img alt="" decoding="async" height="500" src={staff.imageDataUrl} width="400" />
         ) : (
           <div className="staff-image-placeholder">{staff.name.slice(0, 1)}</div>
         )}

@@ -66,10 +66,10 @@ export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutM
     const cardHeightMm = usableCardHeight / rowCount
     const cardWidthMm =
       (contentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
-    const imageWidthMm = Math.min(cardWidthMm * 0.86, (cardHeightMm - 4.2) * 0.75)
-    const imageHeightMm = imageWidthMm / 0.75
+    const imageWidthMm = Math.min(cardWidthMm * 0.86, (cardHeightMm - 5.2) * 0.8)
+    const imageHeightMm = imageWidthMm / 0.8
 
-    if (cardHeightMm >= imageHeightMm + 4.2) {
+    if (cardHeightMm >= imageHeightMm + 5.2) {
       return {
         cardGapMm,
         cardHeightMm,
@@ -89,13 +89,13 @@ export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutM
   const cardWidthMm =
     (contentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
   const cardHeightMm = Math.max(4, availableHeight - headerHeight)
-  const imageWidthMm = Math.max(2, Math.min(cardWidthMm * 0.86, (cardHeightMm - 3.4) * 0.75))
+  const imageWidthMm = Math.max(2, Math.min(cardWidthMm * 0.86, (cardHeightMm - 4.6) * 0.8))
 
   return {
     cardGapMm,
     cardHeightMm,
     cardWidthMm,
-    imageHeightMm: imageWidthMm / 0.75,
+    imageHeightMm: imageWidthMm / 0.8,
     imageWidthMm,
     perRow,
     rowGapMm: A4_LAYOUT.compactRowGapMm,

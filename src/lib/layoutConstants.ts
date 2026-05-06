@@ -14,9 +14,9 @@ export const A4_LAYOUT = {
   cardGapMm: 4,
   compactCardGapMm: 1.4,
   staffCardWidthMm: 27,
-  staffCardHeightMm: 44,
-  staffImageWidthMm: 23,
-  staffImageHeightMm: 30.7,
+  staffCardHeightMm: 42,
+  staffImageWidthMm: 24,
+  staffImageHeightMm: 30,
   legendHeightMm: 8,
 } as const
 
