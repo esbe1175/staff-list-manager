@@ -218,6 +218,47 @@ select {
   cursor: pointer;
 }
 
+.layout-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #d5dce8;
+  border-radius: 8px;
+  padding: 4px;
+  background: white;
+  gap: 4px;
+}
+
+.layout-toggle button {
+  min-width: 0;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.layout-toggle button:hover {
+  background: #f1f5f9;
+  color: var(--app-ink);
+}
+
+.layout-toggle button.selected {
+  background: var(--app-ink);
+  color: white;
+}
+
+.layout-toggle svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
 .high-contrast-button,
 .primary-action-button {
   color: white !important;

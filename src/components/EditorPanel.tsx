@@ -2,6 +2,8 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   DragHandleDots2Icon,
+  GridIcon,
+  RowsIcon,
   Pencil1Icon,
   PlusIcon,
   TrashIcon,
@@ -347,17 +349,33 @@ export function EditorPanel() {
             onChange={(event) => updateDocument({ primaryColor: event.target.value })}
           />
         </label>
-        <label className="check-row">
-          <Checkbox
-            checked={document.compactLayout}
-            onCheckedChange={(checked) =>
-              updateDocument({
-                compactLayout: checked === true,
-              })
-            }
-          />
-          <Text size="2">{label('compactLayout')}</Text>
-        </label>
+        <div className="field">
+          <Text as="span" size="2">
+            {label('layout')}
+          </Text>
+          <div className="layout-toggle" role="radiogroup" aria-label={label('layout')}>
+            <button
+              aria-checked={!document.compactLayout}
+              className={!document.compactLayout ? 'selected' : ''}
+              role="radio"
+              type="button"
+              onClick={() => updateDocument({ compactLayout: false })}
+            >
+              <RowsIcon />
+              <span>{label('regularLayout')}</span>
+            </button>
+            <button
+              aria-checked={document.compactLayout}
+              className={document.compactLayout ? 'selected' : ''}
+              role="radio"
+              type="button"
+              onClick={() => updateDocument({ compactLayout: true })}
+            >
+              <GridIcon />
+              <span>{label('compactLayout')}</span>
+            </button>
+          </div>
+        </div>
       </section>
 
       <section className="editor-section">
