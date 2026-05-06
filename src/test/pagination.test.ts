@@ -19,6 +19,7 @@ function documentWithCounts(counts: number[]): StaffDocument {
     title: 'Test',
     subtitle: 'Test subtitle',
     useAutoDateSubtitle: false,
+    compactLayout: false,
     primaryColor: '#0969da',
     locale: 'da',
     sections: counts.map((count, sectionIndex) => ({
@@ -45,6 +46,27 @@ describe('paginateDocument', () => {
     )
 
     expect(printedStaff).toHaveLength(44)
+  })
+
+  it('sorts staff by name and places interns last', () => {
+    const document = documentWithCounts([0])
+    document.sections[0].staff = [
+      { ...staff(1), name: 'Charlie', isPraktikant: false },
+      { ...staff(2), name: 'Anne', isPraktikant: true },
+      { ...staff(3), name: 'Bent', isPraktikant: false },
+    ]
+    const printedStaff = paginateDocument(document).flatMap((page) =>
+      page.sections.flatMap((section) => section.rows.flatMap((row) => row)),
+    )
+
+    expect(printedStaff.map((person) => person.name)).toEqual(['Bent', 'Charlie', 'Anne'])
+  })
+
+  it('keeps compact layout on a single page', () => {
+    const document = documentWithCounts([48, 48])
+    document.compactLayout = true
+
+    expect(paginateDocument(document)).toHaveLength(1)
   })
 
   it('renders empty sections without adding staff', () => {

@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react'
 import { t } from '../i18n/translations'
 import { autoSubtitle } from '../lib/date'
 import { A4_LAYOUT } from '../lib/layoutConstants'
+import { getCompactLayoutMetrics } from '../lib/pagination'
 import type { PrintPage } from '../lib/pagination'
 import type { StaffDocument, StaffMember } from '../types/document'
 
@@ -18,9 +19,13 @@ type A4PageProps = {
 
 const StaffCard = memo(function StaffCard({
   forceImages = false,
+  locale,
+  showContact,
   staff,
 }: {
   forceImages?: boolean
+  locale: StaffDocument['locale']
+  showContact: boolean
   staff: StaffMember
 }) {
   const frameRef = useRef<HTMLDivElement>(null)
@@ -61,6 +66,9 @@ const StaffCard = memo(function StaffCard({
     return () => observer.disconnect()
   }, [forceImages, shouldAttachImage, staff.id, staff.imageDataUrl])
 
+  const effectiveJobTitle =
+    staff.jobTitle.trim() || (staff.isPraktikant ? t(locale, 'praktikant') : '')
+
   return (
     <article className="staff-card">
       <div
@@ -68,13 +76,21 @@ const StaffCard = memo(function StaffCard({
         ref={frameRef}
       >
         {imageIsAttached && staff.imageDataUrl ? (
-          <img alt="" decoding="async" height="512" src={staff.imageDataUrl} width="512" />
+          <img alt="" decoding="async" height="512" src={staff.imageDataUrl} width="384" />
         ) : (
           <div className="staff-image-placeholder">{staff.name.slice(0, 1)}</div>
         )}
       </div>
       <strong>{staff.name}</strong>
-      <span>{staff.jobTitle}</span>
+      <span className={`staff-job-title ${staff.isPraktikant ? 'is-praktikant-title' : ''}`}>
+        {effectiveJobTitle}
+      </span>
+      {showContact && (staff.email || staff.phone) ? (
+        <small className="staff-contact">
+          {staff.email ? <span>{staff.email}</span> : null}
+          {staff.phone ? <span>{staff.phone}</span> : null}
+        </small>
+      ) : null}
     </article>
   )
 })
@@ -87,16 +103,32 @@ export function A4Page({
   scale = 1,
 }: A4PageProps) {
   const subtitle = document.useAutoDateSubtitle ? autoSubtitle(document.locale) : document.subtitle
+  const compactMetrics = document.compactLayout ? getCompactLayoutMetrics(document) : null
+  const showContact =
+    !document.compactLayout || (compactMetrics?.cardHeightMm ?? A4_LAYOUT.staffCardHeightMm) >= 30
 
   return (
     <section
-      className="a4-page"
+      className={`a4-page ${document.compactLayout ? 'is-compact-layout' : ''}`}
       style={{
         width: `${A4_LAYOUT.pageWidthMm}mm`,
         height: `${A4_LAYOUT.pageHeightMm}mm`,
         padding: `${A4_LAYOUT.marginMm}mm`,
         transform: `scale(${scale})`,
         '--document-primary-color': document.primaryColor,
+        ...(compactMetrics
+          ? {
+              '--card-gap-mm': `${compactMetrics.cardGapMm}mm`,
+              '--card-height-mm': `${compactMetrics.cardHeightMm}mm`,
+              '--card-width-mm': `${compactMetrics.cardWidthMm}mm`,
+              '--image-height-mm': `${compactMetrics.imageHeightMm}mm`,
+              '--image-width-mm': `${compactMetrics.imageWidthMm}mm`,
+              '--row-gap-mm': `${compactMetrics.rowGapMm}mm`,
+              '--section-gap-mm': `${compactMetrics.sectionGapMm}mm`,
+              '--section-header-height-mm': `${compactMetrics.sectionHeaderHeightMm}mm`,
+              '--staff-columns': compactMetrics.perRow,
+            }
+          : {}),
       } as CSSProperties}
     >
       <header className="a4-header">
@@ -114,7 +146,13 @@ export function A4Page({
             {section.rows.map((row, rowIndex) => (
               <div className="staff-row" key={`${section.id}-${rowIndex}`}>
                 {row.map((staff) => (
-                  <StaffCard forceImages={forceImages} staff={staff} key={staff.id} />
+                  <StaffCard
+                    forceImages={forceImages}
+                    key={staff.id}
+                    locale={document.locale}
+                    showContact={showContact}
+                    staff={staff}
+                  />
                 ))}
               </div>
             ))}

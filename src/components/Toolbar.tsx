@@ -4,7 +4,7 @@ import { Button, Flex, Heading } from '@radix-ui/themes'
 import dkFlag from 'flag-icons/flags/4x3/dk.svg'
 import gbFlag from 'flag-icons/flags/4x3/gb.svg'
 import { t } from '../i18n/translations'
-import { createSlmBlob, downloadBlob, readSlmFile } from '../lib/slmFile'
+import { createSlmBlob, createSlmFilename, readSlmFile, saveBlob } from '../lib/slmFile'
 import type { Locale, StaffDocument } from '../types/document'
 
 type ToolbarProps = {
@@ -24,8 +24,7 @@ export function Toolbar({ document, locale, onOpen, onNew, onLocaleChange, onPri
 
   async function saveFile() {
     const blob = await createSlmBlob(document)
-    const filename = `${document.title || 'staff-list'}.slm`
-    downloadBlob(blob, filename)
+    await saveBlob(blob, createSlmFilename(document))
   }
 
   async function openFile(file: File | undefined) {

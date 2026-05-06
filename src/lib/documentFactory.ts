@@ -7,6 +7,7 @@ export function createEmptyDocument(locale: Locale = 'da'): StaffDocument {
     title: '',
     subtitle: '',
     useAutoDateSubtitle: true,
+    compactLayout: false,
     primaryColor: '#0969da',
     locale,
     sections: [],

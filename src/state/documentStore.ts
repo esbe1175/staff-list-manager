@@ -11,7 +11,7 @@ type DocumentState = {
   setDocument: (document: StaffDocument) => void
   resetDocument: () => void
   setLocale: (locale: Locale) => void
-  updateDocument: (patch: Partial<Pick<StaffDocument, 'title' | 'subtitle' | 'useAutoDateSubtitle' | 'primaryColor'>>) => void
+  updateDocument: (patch: Partial<Pick<StaffDocument, 'title' | 'subtitle' | 'useAutoDateSubtitle' | 'compactLayout' | 'primaryColor'>>) => void
   addSection: () => void
   updateSectionName: (sectionId: string, name: string) => void
   removeSection: (sectionId: string) => void
@@ -34,6 +34,7 @@ function getInitialLocale(): Locale {
 function withAutoSubtitle(document: StaffDocument): StaffDocument {
   const normalizedDocument = {
     ...document,
+    compactLayout: document.compactLayout ?? false,
     primaryColor: document.primaryColor ?? '#0969da',
   }
 

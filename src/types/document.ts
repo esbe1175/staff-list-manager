@@ -4,6 +4,8 @@ export type StaffMember = {
   id: string
   name: string
   jobTitle: string
+  email?: string
+  phone?: string
   imageDataUrl: string
   thumbnailDataUrl?: string
   isPraktikant: boolean
@@ -22,6 +24,7 @@ export type StaffDocument = {
   title: string
   subtitle: string
   useAutoDateSubtitle: boolean
+  compactLayout: boolean
   primaryColor: string
   locale: Locale
   sections: StaffSection[]

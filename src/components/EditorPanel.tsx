@@ -6,6 +6,7 @@ import { t } from '../i18n/translations'
 import { autoSubtitle } from '../lib/date'
 import { nameFromFilename } from '../lib/filenameParsing'
 import { optimizeStaffImage } from '../lib/imageProcessing'
+import { sortStaffForPrint } from '../lib/staffSorting'
 import { useDocumentStore } from '../state/documentStore'
 import type { StaffMember } from '../types/document'
 
@@ -60,10 +61,10 @@ const EditorStaffTile = memo(function EditorStaffTile({
         <img
           alt=""
           decoding="async"
-          height="70"
+          height="80"
           loading="lazy"
           src={imageSource}
-          width="70"
+          width="60"
         />
       ) : (
         <div className="staff-tile-placeholder">{staff.name.slice(0, 1)}</div>
@@ -120,6 +121,8 @@ export function EditorPanel() {
       id: crypto.randomUUID(),
       name: nameFromFilename(file.name),
       jobTitle: '',
+      email: '',
+      phone: '',
       imageDataUrl: '',
       isPraktikant: false,
       sourceFilename: file.name,
@@ -159,6 +162,17 @@ export function EditorPanel() {
             value={document.title}
             onChange={(event) => updateDocument({ title: event.target.value })}
           />
+        </label>
+        <label className="check-row">
+          <Checkbox
+            checked={document.compactLayout}
+            onCheckedChange={(checked) =>
+              updateDocument({
+                compactLayout: checked === true,
+              })
+            }
+          />
+          <Text size="2">{label('compactLayout')}</Text>
         </label>
         <label className="field">
           <Text as="span" size="2">
@@ -254,7 +268,7 @@ export function EditorPanel() {
           <Text size="2">{selectedSection ? label('dropHint') : label('addSectionFirst')}</Text>
         </Box>
         <div className="staff-grid-editor">
-          {selectedSection?.staff.map((staff) => (
+          {selectedSection ? sortStaffForPrint(selectedSection.staff, document.locale).map((staff) => (
             <EditorStaffTile
               isSelected={staff.id === selectedStaffId}
               key={staff.id}
@@ -262,7 +276,7 @@ export function EditorPanel() {
               staff={staff}
               onSelect={() => selectStaff(selectedSection.id, staff.id)}
             />
-          ))}
+          )) : null}
         </div>
       </section>
 
@@ -284,8 +298,27 @@ export function EditorPanel() {
                 {label('jobTitle')}
               </Text>
               <TextField.Root
+                placeholder={selectedStaff.isPraktikant ? label('praktikant') : undefined}
                 value={selectedStaff.jobTitle}
                 onChange={(event) => updateStaff(selectedStaff.id, { jobTitle: event.target.value })}
+              />
+            </label>
+            <label className="field">
+              <Text as="span" size="2">
+                {label('email')}
+              </Text>
+              <TextField.Root
+                value={selectedStaff.email ?? ''}
+                onChange={(event) => updateStaff(selectedStaff.id, { email: event.target.value })}
+              />
+            </label>
+            <label className="field">
+              <Text as="span" size="2">
+                {label('phone')}
+              </Text>
+              <TextField.Root
+                value={selectedStaff.phone ?? ''}
+                onChange={(event) => updateStaff(selectedStaff.id, { phone: event.target.value })}
               />
             </label>
             <label className="check-row">

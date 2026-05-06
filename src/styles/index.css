@@ -405,8 +405,8 @@ select {
 
 .staff-tile img,
 .staff-tile-placeholder {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 80px;
   border-radius: 6px;
 }
 
@@ -506,6 +506,10 @@ select {
   box-shadow: 0 14px 40px rgba(15, 23, 42, 0.16);
 }
 
+.a4-page.is-compact-layout {
+  grid-template-rows: 20mm 1fr 14mm;
+}
+
 .a4-header {
   text-align: center;
 }
@@ -517,10 +521,19 @@ select {
   letter-spacing: -0.02em;
 }
 
+.a4-page.is-compact-layout .a4-header h1 {
+  margin: 4mm 0 1.5mm;
+  font-size: 6mm;
+}
+
 .a4-header p {
   margin: 0;
   color: #475569;
   font-size: 4mm;
+}
+
+.a4-page.is-compact-layout .a4-header p {
+  font-size: 3mm;
 }
 
 .a4-body {
@@ -528,11 +541,11 @@ select {
 }
 
 .print-section {
-  margin-bottom: 10mm;
+  margin-bottom: var(--section-gap-mm, 10mm);
 }
 
 .print-section h2 {
-  height: 14mm;
+  height: var(--section-header-height-mm, 14mm);
   margin: 0;
   padding-bottom: 3mm;
   border-bottom: 0.3mm solid #cbd5e1;
@@ -543,26 +556,32 @@ select {
   align-items: flex-end;
 }
 
+.a4-page.is-compact-layout .print-section h2 {
+  padding-bottom: 1mm;
+  border-bottom-width: 0.2mm;
+  font-size: 2.8mm;
+}
+
 .staff-row {
   display: grid;
-  grid-template-columns: repeat(6, 27mm);
-  column-gap: 4mm;
+  grid-template-columns: repeat(var(--staff-columns, 6), var(--card-width-mm, 27mm));
+  column-gap: var(--card-gap-mm, 4mm);
   row-gap: 0;
 }
 
 .print-section h2 + .staff-row {
-  margin-top: 3.5mm;
+  margin-top: var(--first-row-gap-mm, 3.5mm);
 }
 
 .staff-row + .staff-row {
-  margin-top: 5mm;
+  margin-top: var(--row-gap-mm, 5mm);
 }
 
 .staff-card {
-  width: 27mm;
-  height: 37mm;
+  width: var(--card-width-mm, 27mm);
+  height: var(--card-height-mm, 44mm);
   display: grid;
-  grid-template-rows: 25mm 6.4mm 4.6mm;
+  grid-template-rows: var(--image-height-mm, 30.7mm) 5.8mm 4.4mm minmax(0, 1fr);
   justify-items: center;
   align-items: start;
   gap: 0.6mm;
@@ -571,20 +590,17 @@ select {
 }
 
 .staff-image-frame {
-  width: 25mm;
-  height: 25mm;
+  width: var(--image-width-mm, 23mm);
+  height: var(--image-height-mm, 30.7mm);
   border-radius: 1.7mm;
   overflow: hidden;
-  border: 0.55mm solid transparent;
-  padding: 0.75mm;
+  border: 0;
+  padding: 0;
+  box-shadow: inset 0 0 0 0.35mm transparent;
 }
 
 .staff-image-frame.is-praktikant {
-  border-color: var(--document-primary-color, #0969da);
-  background: color-mix(in srgb, var(--document-primary-color, #0969da) 10%, white);
-  box-shadow:
-    0 0 0 0.45mm var(--document-primary-color, #0969da),
-    0 0 0 1mm color-mix(in srgb, var(--document-primary-color, #0969da) 14%, transparent);
+  box-shadow: inset 0 0 0 0.42mm var(--document-primary-color, #0969da);
 }
 
 .staff-image-frame img,
@@ -625,6 +641,55 @@ select {
   align-items: start;
   justify-content: center;
   overflow: hidden;
+}
+
+.staff-card .staff-job-title.is-praktikant-title {
+  color: var(--document-primary-color, #0969da);
+  font-weight: 700;
+}
+
+.staff-contact {
+  max-width: var(--card-width-mm, 27mm);
+  display: grid;
+  gap: 0.2mm;
+  color: #64748b;
+  font-size: 1.75mm;
+  line-height: 1.05;
+  overflow: hidden;
+  text-align: center;
+}
+
+.staff-contact span {
+  display: block;
+  min-height: 0;
+  max-width: 100%;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.a4-page.is-compact-layout {
+  --first-row-gap-mm: 1.2mm;
+}
+
+.a4-page.is-compact-layout .staff-card {
+  grid-template-rows: var(--image-height-mm) minmax(2mm, 1fr) minmax(1.8mm, 1fr);
+  gap: 0.15mm;
+}
+
+.a4-page.is-compact-layout .staff-card strong {
+  font-size: 1.7mm;
+  line-height: 1;
+  min-height: 0;
+}
+
+.a4-page.is-compact-layout .staff-card span {
+  font-size: 1.25mm;
+  line-height: 1;
+  min-height: 0;
 }
 
 .a4-footer {

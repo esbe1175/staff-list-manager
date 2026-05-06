@@ -5,12 +5,18 @@ export const A4_LAYOUT = {
   headerHeightMm: 32,
   footerHeightMm: 12,
   sectionHeaderHeightMm: 14,
+  compactHeaderHeightMm: 20,
+  compactSectionHeaderHeightMm: 5,
   sectionGapMm: 10,
+  compactSectionGapMm: 2,
   rowGapMm: 5,
+  compactRowGapMm: 1.2,
   cardGapMm: 4,
+  compactCardGapMm: 1.4,
   staffCardWidthMm: 27,
-  staffCardHeightMm: 37,
-  staffImageHeightMm: 25,
+  staffCardHeightMm: 44,
+  staffImageWidthMm: 23,
+  staffImageHeightMm: 30.7,
   legendHeightMm: 8,
 } as const
 
@@ -31,3 +37,13 @@ export const staffPerRow = Math.max(
       (A4_LAYOUT.staffCardWidthMm + A4_LAYOUT.cardGapMm),
   ),
 )
+
+export function getAvailableBodyHeightMm(compactLayout: boolean): number {
+  return (
+    A4_LAYOUT.pageHeightMm -
+    A4_LAYOUT.marginMm * 2 -
+    (compactLayout ? A4_LAYOUT.compactHeaderHeightMm : A4_LAYOUT.headerHeightMm) -
+    A4_LAYOUT.footerHeightMm -
+    A4_LAYOUT.legendHeightMm
+  )
+}

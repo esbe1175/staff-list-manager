@@ -1,5 +1,7 @@
-const staffImageSizePx = 512
-const thumbnailImageSizePx = 128
+const staffImageWidthPx = 384
+const staffImageHeightPx = 512
+const thumbnailImageWidthPx = 96
+const thumbnailImageHeightPx = 128
 const outputQuality = 0.86
 const thumbnailQuality = 0.78
 
@@ -33,14 +35,22 @@ function canvasToBlob(canvas: HTMLCanvasElement, type: string, quality: number):
   return new Promise((resolve) => canvas.toBlob(resolve, type, quality))
 }
 
-async function renderSquareImage(
+async function renderPortraitImage(
   image: HTMLImageElement,
-  size: number,
+  width: number,
+  height: number,
   quality: number,
 ): Promise<string> {
-  const sourceSize = Math.min(image.naturalWidth, image.naturalHeight)
-  const sourceX = Math.max(0, (image.naturalWidth - sourceSize) / 2)
-  const sourceY = Math.max(0, (image.naturalHeight - sourceSize) / 2)
+  const targetRatio = width / height
+  const sourceRatio = image.naturalWidth / image.naturalHeight
+  const sourceWidth = sourceRatio > targetRatio
+    ? image.naturalHeight * targetRatio
+    : image.naturalWidth
+  const sourceHeight = sourceRatio > targetRatio
+    ? image.naturalHeight
+    : image.naturalWidth / targetRatio
+  const sourceX = Math.max(0, (image.naturalWidth - sourceWidth) / 2)
+  const sourceY = Math.max(0, (image.naturalHeight - sourceHeight) / 2)
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d', {
     alpha: false,
@@ -51,20 +61,20 @@ async function renderSquareImage(
     throw new Error('Browseren understøtter ikke billedoptimering.')
   }
 
-  canvas.width = size
-  canvas.height = size
+  canvas.width = width
+  canvas.height = height
   context.imageSmoothingEnabled = true
   context.imageSmoothingQuality = 'high'
   context.drawImage(
     image,
     sourceX,
     sourceY,
-    sourceSize,
-    sourceSize,
+    sourceWidth,
+    sourceHeight,
     0,
     0,
-    size,
-    size,
+    width,
+    height,
   )
 
   const webpBlob = await canvasToBlob(canvas, 'image/webp', quality)
@@ -85,8 +95,8 @@ export type OptimizedStaffImage = {
 export async function optimizeStaffImage(file: File): Promise<OptimizedStaffImage> {
   const image = await loadImage(file)
   const [imageDataUrl, thumbnailDataUrl] = await Promise.all([
-    renderSquareImage(image, staffImageSizePx, outputQuality),
-    renderSquareImage(image, thumbnailImageSizePx, thumbnailQuality),
+    renderPortraitImage(image, staffImageWidthPx, staffImageHeightPx, outputQuality),
+    renderPortraitImage(image, thumbnailImageWidthPx, thumbnailImageHeightPx, thumbnailQuality),
   ])
 
   return { imageDataUrl, thumbnailDataUrl }
