@@ -1,4 +1,11 @@
-import { DownloadIcon, FileIcon, GlobeIcon, ReaderIcon, ResetIcon } from '@radix-ui/react-icons'
+import {
+  ChevronDownIcon,
+  DownloadIcon,
+  FileIcon,
+  GlobeIcon,
+  ReaderIcon,
+  ResetIcon,
+} from '@radix-ui/react-icons'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { Button, Flex, Heading } from '@radix-ui/themes'
 import dkFlag from 'flag-icons/flags/4x3/dk.svg'
@@ -46,9 +53,7 @@ export function Toolbar({ document, locale, onOpen, onNew, onLocaleChange, onPri
             <GlobeIcon aria-hidden="true" />
             <img alt="" aria-hidden="true" className="language-flag" src={activeLanguage.flag} />
             <span>{activeLanguage.code}</span>
-            <span aria-hidden="true" className="language-caret">
-              ▾
-            </span>
+            <ChevronDownIcon aria-hidden="true" className="language-caret" />
           </DropdownMenu.Trigger>
           <DropdownMenu.Portal>
             <DropdownMenu.Content align="end" className="language-menu" sideOffset={6}>

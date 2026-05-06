@@ -1,4 +1,5 @@
 import '@radix-ui/themes/styles.css'
+import { CheckIcon } from '@radix-ui/react-icons'
 import { Theme } from '@radix-ui/themes'
 import { useEffect, useMemo, useState } from 'react'
 import { flushSync } from 'react-dom'
@@ -85,8 +86,11 @@ function DesktopApp() {
         />
       </div>
       <footer className="status-bar">
-        <span className="status-pill">✓ {t(locale, 'ready')}</span>
-        <span>A4 (210 × 297 mm)</span>
+        <span className="status-pill">
+          <CheckIcon />
+          {t(locale, 'ready')}
+        </span>
+        <span>A4 (210 x 297 mm)</span>
         <span>{t(locale, 'printHint')}</span>
         <span>{pageCount} sider</span>
         <span className="version-label">v1.0</span>

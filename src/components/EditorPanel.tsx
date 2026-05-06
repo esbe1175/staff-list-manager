@@ -1,4 +1,12 @@
-import { DragHandleDots2Icon, Pencil1Icon, PlusIcon, TrashIcon, UploadIcon } from '@radix-ui/react-icons'
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  DragHandleDots2Icon,
+  Pencil1Icon,
+  PlusIcon,
+  TrashIcon,
+  UploadIcon,
+} from '@radix-ui/react-icons'
 import {
   DndContext,
   KeyboardSensor,
@@ -171,10 +179,10 @@ function SectionListItem({
       </div>
       <div className="section-controls">
         <button disabled={!canMoveUp} type="button" onClick={onMoveUp}>
-          ↑
+          <ArrowUpIcon />
         </button>
         <button disabled={!canMoveDown} type="button" onClick={onMoveDown}>
-          ↓
+          <ArrowDownIcon />
         </button>
         <button
           aria-label={deleteLabel}

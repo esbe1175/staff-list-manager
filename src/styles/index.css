@@ -122,7 +122,6 @@ select {
 .language-caret {
   margin-left: 1px;
   color: #475569;
-  font-size: 12px;
 }
 
 .language-menu {
@@ -908,10 +907,18 @@ select {
 }
 
 .status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   color: #047857;
   background: #dcfce7;
   border-radius: 999px;
   padding: 3px 9px;
+}
+
+.status-pill svg {
+  width: 14px;
+  height: 14px;
 }
 
 .version-label {
