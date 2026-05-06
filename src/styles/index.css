@@ -531,10 +531,10 @@ select {
   display: grid;
   place-items: center;
   gap: 8px;
-  border: 1px dashed #cbd5e1;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
-  background: #f8fafc;
-  color: #64748b;
+  background: #f1f5f9;
+  color: #475569;
   padding: 16px;
   text-align: center;
 }
@@ -542,7 +542,7 @@ select {
 .staff-prerequisite svg {
   width: 18px;
   height: 18px;
-  color: #64748b;
+  color: #475569;
 }
 
 .staff-grid-editor {
