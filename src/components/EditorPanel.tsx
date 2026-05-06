@@ -25,6 +25,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { Badge, Box, Button, Checkbox, Flex, Heading, Text, TextField } from '@radix-ui/themes'
 import { memo, useEffect, useRef, useState } from 'react'
+import type { MouseEvent } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { t } from '../i18n/translations'
 import { autoSubtitle } from '../lib/date'
@@ -141,11 +142,17 @@ function SectionListItem({
     nameInputRef.current?.select()
   }
 
+  function handleDeleteClick(event: MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation()
+    onDelete()
+  }
+
   return (
     <div
       className={`section-list-item ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
+      onClick={onSelect}
     >
       <button
         aria-label={dragLabel}
@@ -191,7 +198,7 @@ function SectionListItem({
           className="section-delete-button"
           disabled={!canRemove}
           type="button"
-          onClick={onDelete}
+          onClick={handleDeleteClick}
         >
           <TrashIcon />
         </button>
