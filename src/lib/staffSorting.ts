@@ -1,14 +1,16 @@
 import type { StaffMember } from '../types/document'
 
-export function sortStaffForPrint(staff: StaffMember[], locale: string): StaffMember[] {
+const staffNameCollator = new Intl.Collator('da', {
+  numeric: true,
+  sensitivity: 'base',
+})
+
+export function sortStaffForPrint(staff: StaffMember[]): StaffMember[] {
   return [...staff].sort((first, second) => {
     if (first.isPraktikant !== second.isPraktikant) {
       return first.isPraktikant ? 1 : -1
     }
 
-    return first.name.localeCompare(second.name, locale, {
-      numeric: true,
-      sensitivity: 'base',
-    })
+    return staffNameCollator.compare(first.name, second.name)
   })
 }

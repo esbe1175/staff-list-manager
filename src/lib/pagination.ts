@@ -132,7 +132,7 @@ export function paginateDocument(document: StaffDocument): PrintPage[] {
           id: section.id,
           name: section.name,
           continued: false,
-          rows: chunkStaff(sortStaffForPrint(section.staff, document.locale), metrics.perRow),
+          rows: chunkStaff(sortStaffForPrint(section.staff), metrics.perRow),
         })),
       },
     ]
@@ -149,7 +149,7 @@ export function paginateDocument(document: StaffDocument): PrintPage[] {
   }
 
   for (const section of document.sections) {
-    const rows = chunkStaff(sortStaffForPrint(section.staff, document.locale))
+    const rows = chunkStaff(sortStaffForPrint(section.staff))
 
     if (rows.length === 0) {
       const requiredHeight =

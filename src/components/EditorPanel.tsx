@@ -428,7 +428,7 @@ export function EditorPanel() {
         </Box>
         <div className="staff-grid-editor">
           {selectedSection
-            ? sortStaffForPrint(selectedSection.staff, document.locale).map((staff) => (
+            ? sortStaffForPrint(selectedSection.staff).map((staff) => (
                 <EditorStaffTile
                   isSelected={staff.id === selectedStaffId}
                   key={staff.id}

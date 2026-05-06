@@ -62,6 +62,27 @@ describe('paginateDocument', () => {
     expect(printedStaff.map((person) => person.name)).toEqual(['Bent', 'Charlie', 'Anne'])
   })
 
+  it('uses Danish name collation even when UI language is English', () => {
+    const document = documentWithCounts([0])
+    document.locale = 'en'
+    document.sections[0].staff = [
+      { ...staff(1), name: 'Åse Svane', isPraktikant: false },
+      { ...staff(2), name: 'Anne Hansen', isPraktikant: false },
+      { ...staff(3), name: 'Øjvind Larsen', isPraktikant: false },
+      { ...staff(4), name: 'Ægir Jensen', isPraktikant: false },
+    ]
+    const printedStaff = paginateDocument(document).flatMap((page) =>
+      page.sections.flatMap((section) => section.rows.flatMap((row) => row)),
+    )
+
+    expect(printedStaff.map((person) => person.name)).toEqual([
+      'Anne Hansen',
+      'Ægir Jensen',
+      'Øjvind Larsen',
+      'Åse Svane',
+    ])
+  })
+
   it('keeps compact layout on a single page', () => {
     const document = documentWithCounts([48, 48])
     document.compactLayout = true
