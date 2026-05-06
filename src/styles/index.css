@@ -584,7 +584,7 @@ select {
 }
 
 .a4-page.is-compact-layout {
-  grid-template-rows: 20mm 1fr 14mm;
+  grid-template-rows: 12mm 1fr 8mm;
 }
 
 .a4-header {
@@ -599,8 +599,8 @@ select {
 }
 
 .a4-page.is-compact-layout .a4-header h1 {
-  margin: 4mm 0 1.5mm;
-  font-size: 6mm;
+  margin: 1.2mm 0 0.8mm;
+  font-size: 5.2mm;
 }
 
 .a4-header p {
@@ -610,7 +610,7 @@ select {
 }
 
 .a4-page.is-compact-layout .a4-header p {
-  font-size: 3mm;
+  font-size: 2.4mm;
 }
 
 .a4-body {
@@ -763,25 +763,35 @@ select {
 }
 
 .a4-page.is-compact-layout .staff-card {
-  grid-template-rows: var(--image-height-mm) minmax(2.4mm, 1fr) minmax(2.1mm, 1fr);
+  grid-template-rows: var(--image-height-mm) 2.4mm 2mm minmax(3.5mm, 1fr);
   gap: 0.35mm;
 }
 
 .a4-page.is-compact-layout .staff-card strong {
-  font-size: 1.95mm;
+  font-size: 1.85mm;
   line-height: 1;
   min-height: 0;
 }
 
 .a4-page.is-compact-layout .staff-card span {
-  font-size: 1.55mm;
+  font-size: 1.35mm;
   line-height: 1;
   min-height: 0;
 }
 
 .a4-page.is-compact-layout .staff-card .staff-job-title.is-praktikant-title {
-  font-size: 1.7mm;
+  font-size: 1.5mm;
   font-weight: 800;
+}
+
+.a4-page.is-compact-layout .staff-contact {
+  gap: 0.1mm;
+  font-size: 1.05mm;
+  line-height: 1.05;
+}
+
+.a4-page.is-compact-layout .a4-footer {
+  font-size: 2.2mm;
 }
 
 .a4-footer {

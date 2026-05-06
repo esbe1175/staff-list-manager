@@ -5,7 +5,7 @@ export const A4_LAYOUT = {
   headerHeightMm: 32,
   footerHeightMm: 12,
   sectionHeaderHeightMm: 14,
-  compactHeaderHeightMm: 20,
+  compactHeaderHeightMm: 12,
   compactSectionHeaderHeightMm: 5,
   sectionGapMm: 10,
   compactSectionGapMm: 2,
@@ -17,7 +17,7 @@ export const A4_LAYOUT = {
   staffCardHeightMm: 42,
   staffImageWidthMm: 24,
   staffImageHeightMm: 30,
-  legendHeightMm: 8,
+  legendHeightMm: 4,
 } as const
 
 export const contentWidthMm =
