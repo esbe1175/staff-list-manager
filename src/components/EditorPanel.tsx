@@ -3,6 +3,7 @@ import {
   ArrowUpIcon,
   DragHandleDots2Icon,
   GridIcon,
+  Pencil2Icon,
   RowsIcon,
   Pencil1Icon,
   PlusIcon,
@@ -341,13 +342,21 @@ export function EditorPanel() {
           <Text as="span" size="2">
             {label('primaryColor')}
           </Text>
-          <input
-            aria-label={label('primaryColor')}
-            className="document-color-picker"
-            type="color"
-            value={document.primaryColor}
-            onChange={(event) => updateDocument({ primaryColor: event.target.value })}
-          />
+          <span className="document-color-control">
+            <Pencil2Icon aria-hidden="true" />
+            <span
+              aria-hidden="true"
+              className="document-color-swatch"
+              style={{ backgroundColor: document.primaryColor }}
+            />
+            <input
+              aria-label={label('primaryColor')}
+              className="document-color-picker"
+              type="color"
+              value={document.primaryColor}
+              onChange={(event) => updateDocument({ primaryColor: event.target.value })}
+            />
+          </span>
         </label>
         <div className="field">
           <Text as="span" size="2">
