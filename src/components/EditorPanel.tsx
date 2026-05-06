@@ -321,22 +321,18 @@ export function EditorPanel() {
             {label('subtitle')}
           </Text>
           <TextField.Root
-            disabled={document.useAutoDateSubtitle}
+            placeholder={autoSubtitle(document.locale)}
             value={document.subtitle}
-            onChange={(event) => updateDocument({ subtitle: event.target.value })}
-          />
-        </label>
-        <label className="check-row">
-          <Checkbox
-            checked={document.useAutoDateSubtitle}
-            onCheckedChange={(checked) =>
+            onChange={(event) =>
               updateDocument({
-                useAutoDateSubtitle: checked === true,
-                subtitle: checked === true ? '' : autoSubtitle(document.locale),
+                subtitle: event.target.value,
+                useAutoDateSubtitle: event.target.value.trim() === '',
               })
             }
           />
-          <Text size="2">{label('autoDate')}</Text>
+          <Text color="gray" size="1">
+            {label('autoDateHint')}
+          </Text>
         </label>
         <label className="field">
           <Text as="span" size="2">

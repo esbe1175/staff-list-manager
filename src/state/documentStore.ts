@@ -32,16 +32,13 @@ function getInitialLocale(): Locale {
   return savedLocale === 'da' || savedLocale === 'en' ? savedLocale : detectSystemLocale()
 }
 
-function withAutoSubtitle(document: StaffDocument): StaffDocument {
-  const normalizedDocument = {
+function normalizeDocument(document: StaffDocument): StaffDocument {
+  return {
     ...document,
     compactLayout: document.compactLayout ?? false,
     primaryColor: document.primaryColor ?? '#0969da',
+    useAutoDateSubtitle: document.subtitle.trim() === '',
   }
-
-  return normalizedDocument.useAutoDateSubtitle
-    ? { ...normalizedDocument, subtitle: '' }
-    : normalizedDocument
 }
 
 export const useDocumentStore = create<DocumentState>((set, get) => {
@@ -55,7 +52,7 @@ export const useDocumentStore = create<DocumentState>((set, get) => {
     selectedStaffId: initialDocument.sections[0]?.staff[0]?.id ?? null,
     setDocument: (document) =>
       set({
-        document: withAutoSubtitle(document),
+        document: normalizeDocument(document),
         selectedSectionId: document.sections[0]?.id ?? null,
         selectedStaffId: document.sections[0]?.staff[0]?.id ?? null,
       }),
@@ -72,12 +69,12 @@ export const useDocumentStore = create<DocumentState>((set, get) => {
       window.localStorage.setItem(localeStorageKey, locale)
       set(({ document }) => ({
         locale,
-        document: withAutoSubtitle({ ...document, locale }),
+        document: normalizeDocument({ ...document, locale }),
       }))
     },
     updateDocument: (patch) =>
       set(({ document }) => ({
-        document: withAutoSubtitle({ ...document, ...patch }),
+        document: normalizeDocument({ ...document, ...patch }),
       })),
     addSection: () =>
       set(({ document }) => {

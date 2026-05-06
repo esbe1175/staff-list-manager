@@ -12,7 +12,7 @@ type PagesPanelProps = {
 }
 
 export function PagesPanel({ document, pages, selectedPageNumber, onPageSelect }: PagesPanelProps) {
-  const subtitle = document.useAutoDateSubtitle ? autoSubtitle(document.locale) : document.subtitle
+  const subtitle = document.subtitle.trim() || autoSubtitle(document.locale)
 
   return (
     <aside className="pages-panel">

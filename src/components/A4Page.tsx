@@ -102,7 +102,7 @@ export function A4Page({
   pageCount,
   scale = 1,
 }: A4PageProps) {
-  const subtitle = document.useAutoDateSubtitle ? autoSubtitle(document.locale) : document.subtitle
+  const subtitle = document.subtitle.trim() || autoSubtitle(document.locale)
   const compactMetrics = document.compactLayout ? getCompactLayoutMetrics(document) : null
   const showContact =
     !document.compactLayout || (compactMetrics?.cardHeightMm ?? A4_LAYOUT.staffCardHeightMm) >= 30
