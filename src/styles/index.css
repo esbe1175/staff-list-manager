@@ -539,12 +539,6 @@ select {
   text-align: center;
 }
 
-.staff-prerequisite svg {
-  width: 18px;
-  height: 18px;
-  color: #475569;
-}
-
 .staff-grid-editor {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

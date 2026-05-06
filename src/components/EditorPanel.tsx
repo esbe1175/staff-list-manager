@@ -438,7 +438,6 @@ export function EditorPanel() {
           </Box>
         ) : (
           <div className="staff-prerequisite">
-            <UploadIcon />
             <Text size="2">{label('addSectionFirst')}</Text>
           </div>
         )}
@@ -514,7 +513,6 @@ export function EditorPanel() {
           </div>
         ) : (
           <div className="staff-prerequisite">
-            <Pencil1Icon />
             <Text size="2">{label('noSelection')}</Text>
           </div>
         )}
