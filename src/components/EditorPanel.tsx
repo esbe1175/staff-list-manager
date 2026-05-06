@@ -151,7 +151,12 @@ function SectionListItem({
     <div
       className={`section-list-item ${isSelected ? 'selected' : ''} ${isDragging ? 'dragging' : ''}`}
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
+      style={{
+        transform: CSS.Transform.toString(
+          transform ? { ...transform, x: 0, scaleX: 1, scaleY: 1 } : null,
+        ),
+        transition,
+      }}
       onClick={onSelect}
     >
       <button

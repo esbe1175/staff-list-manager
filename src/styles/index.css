@@ -179,6 +179,7 @@ select {
 
 .editor-panel {
   padding: 24px;
+  overflow-x: hidden;
   will-change: scroll-position;
 }
 
