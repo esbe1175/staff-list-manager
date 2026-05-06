@@ -2,6 +2,7 @@ export const A4_LAYOUT = {
   pageWidthMm: 210,
   pageHeightMm: 297,
   marginMm: 14,
+  compactMarginMm: 8,
   headerHeightMm: 32,
   footerHeightMm: 12,
   sectionHeaderHeightMm: 14,
@@ -23,6 +24,12 @@ export const A4_LAYOUT = {
 export const contentWidthMm =
   A4_LAYOUT.pageWidthMm - A4_LAYOUT.marginMm * 2
 
+export function getContentWidthMm(compactLayout: boolean): number {
+  const marginMm = compactLayout ? A4_LAYOUT.compactMarginMm : A4_LAYOUT.marginMm
+
+  return A4_LAYOUT.pageWidthMm - marginMm * 2
+}
+
 export const availableBodyHeightMm =
   A4_LAYOUT.pageHeightMm -
   A4_LAYOUT.marginMm * 2 -
@@ -41,7 +48,7 @@ export const staffPerRow = Math.max(
 export function getAvailableBodyHeightMm(compactLayout: boolean): number {
   return (
     A4_LAYOUT.pageHeightMm -
-    A4_LAYOUT.marginMm * 2 -
+    (compactLayout ? A4_LAYOUT.compactMarginMm : A4_LAYOUT.marginMm) * 2 -
     (compactLayout ? A4_LAYOUT.compactHeaderHeightMm : A4_LAYOUT.headerHeightMm) -
     A4_LAYOUT.footerHeightMm -
     A4_LAYOUT.legendHeightMm

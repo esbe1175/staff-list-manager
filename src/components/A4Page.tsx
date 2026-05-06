@@ -113,7 +113,7 @@ export function A4Page({
       style={{
         width: `${A4_LAYOUT.pageWidthMm}mm`,
         height: `${A4_LAYOUT.pageHeightMm}mm`,
-        padding: `${A4_LAYOUT.marginMm}mm`,
+        padding: `${document.compactLayout ? A4_LAYOUT.compactMarginMm : A4_LAYOUT.marginMm}mm`,
         transform: `scale(${scale})`,
         '--document-primary-color': document.primaryColor,
         ...(compactMetrics

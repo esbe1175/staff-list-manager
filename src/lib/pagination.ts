@@ -1,4 +1,10 @@
-import { A4_LAYOUT, availableBodyHeightMm, contentWidthMm, getAvailableBodyHeightMm, staffPerRow } from './layoutConstants'
+import {
+  A4_LAYOUT,
+  availableBodyHeightMm,
+  getAvailableBodyHeightMm,
+  getContentWidthMm,
+  staffPerRow,
+} from './layoutConstants'
 import { sortStaffForPrint } from './staffSorting'
 import type { StaffDocument, StaffMember } from '../types/document'
 
@@ -37,7 +43,9 @@ export type CompactLayoutMetrics = {
 }
 
 function compactCardGap(perRow: number): number {
-  return Math.min(A4_LAYOUT.compactCardGapMm, contentWidthMm / Math.max(1, perRow * 8))
+  const compactContentWidthMm = getContentWidthMm(true)
+
+  return Math.min(A4_LAYOUT.compactCardGapMm, compactContentWidthMm / Math.max(1, perRow * 8))
 }
 
 export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutMetrics {
@@ -48,6 +56,7 @@ export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutM
     document.sections.reduce((total, section) => total + section.staff.length, 0),
   )
   const availableHeight = getAvailableBodyHeightMm(true)
+  const compactContentWidthMm = getContentWidthMm(true)
   const headerHeight =
     sectionCount * A4_LAYOUT.compactSectionHeaderHeightMm +
     Math.max(0, sectionCount - 1) * A4_LAYOUT.compactSectionGapMm
@@ -65,11 +74,11 @@ export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutM
     const usableCardHeight = Math.max(4, availableHeight - headerHeight - rowGapTotal)
     const cardHeightMm = usableCardHeight / rowCount
     const cardWidthMm =
-      (contentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
-    const imageWidthMm = Math.min(cardWidthMm * 0.84, (cardHeightMm - 8) * 0.8)
+      (compactContentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
+    const imageWidthMm = Math.min(cardWidthMm * 0.82, (cardHeightMm - 9.4) * 0.8)
     const imageHeightMm = imageWidthMm / 0.8
 
-    if (cardHeightMm >= imageHeightMm + 8) {
+    if (cardHeightMm >= imageHeightMm + 9.4) {
       return {
         cardGapMm,
         cardHeightMm,
@@ -87,9 +96,9 @@ export function getCompactLayoutMetrics(document: StaffDocument): CompactLayoutM
   const perRow = staffCount
   const cardGapMm = compactCardGap(perRow)
   const cardWidthMm =
-    (contentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
+    (compactContentWidthMm - Math.max(0, perRow - 1) * cardGapMm) / perRow
   const cardHeightMm = Math.max(4, availableHeight - headerHeight)
-  const imageWidthMm = Math.max(2, Math.min(cardWidthMm * 0.84, (cardHeightMm - 7.4) * 0.8))
+  const imageWidthMm = Math.max(2, Math.min(cardWidthMm * 0.82, (cardHeightMm - 8.8) * 0.8))
 
   return {
     cardGapMm,

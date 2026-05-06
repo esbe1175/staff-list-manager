@@ -763,30 +763,30 @@ select {
 }
 
 .a4-page.is-compact-layout .staff-card {
-  grid-template-rows: var(--image-height-mm) 2.4mm 2mm minmax(3.5mm, 1fr);
-  gap: 0.35mm;
+  grid-template-rows: var(--image-height-mm) 2.9mm 2.5mm minmax(4mm, 1fr);
+  gap: 0.45mm;
 }
 
 .a4-page.is-compact-layout .staff-card strong {
-  font-size: 1.85mm;
-  line-height: 1;
+  font-size: 2.25mm;
+  line-height: 1.05;
   min-height: 0;
 }
 
 .a4-page.is-compact-layout .staff-card span {
-  font-size: 1.35mm;
-  line-height: 1;
+  font-size: 1.8mm;
+  line-height: 1.05;
   min-height: 0;
 }
 
 .a4-page.is-compact-layout .staff-card .staff-job-title.is-praktikant-title {
-  font-size: 1.5mm;
+  font-size: 1.9mm;
   font-weight: 800;
 }
 
 .a4-page.is-compact-layout .staff-contact {
   gap: 0.1mm;
-  font-size: 1.05mm;
+  font-size: 1.35mm;
   line-height: 1.05;
 }
 
