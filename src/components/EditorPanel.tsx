@@ -430,11 +430,18 @@ export function EditorPanel() {
 
       <section className="editor-section">
         <Heading size="4">3. {label('staff')}</Heading>
-        <Box {...dropzone.getRootProps()} className={`dropzone ${!selectedSection ? 'disabled' : ''}`}>
-          <input {...dropzone.getInputProps()} />
-          <UploadIcon />
-          <Text size="2">{selectedSection ? label('dropHint') : label('addSectionFirst')}</Text>
-        </Box>
+        {selectedSection ? (
+          <Box {...dropzone.getRootProps()} className="dropzone">
+            <input {...dropzone.getInputProps()} />
+            <UploadIcon />
+            <Text size="2">{label('dropHint')}</Text>
+          </Box>
+        ) : (
+          <div className="staff-prerequisite">
+            <UploadIcon />
+            <Text size="2">{label('addSectionFirst')}</Text>
+          </div>
+        )}
         <div className="staff-grid-editor">
           {selectedSection
             ? sortStaffForPrint(selectedSection.staff).map((staff) => (
@@ -506,9 +513,10 @@ export function EditorPanel() {
             </Button>
           </div>
         ) : (
-          <Text color="gray" size="2">
-            {label('noSelection')}
-          </Text>
+          <div className="staff-prerequisite">
+            <Pencil1Icon />
+            <Text size="2">{label('noSelection')}</Text>
+          </div>
         )}
       </section>
     </aside>

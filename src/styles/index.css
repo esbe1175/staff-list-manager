@@ -526,6 +526,25 @@ select {
   opacity: 0.62;
 }
 
+.staff-prerequisite {
+  min-height: 76px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #64748b;
+  padding: 16px;
+  text-align: center;
+}
+
+.staff-prerequisite svg {
+  width: 18px;
+  height: 18px;
+  color: #64748b;
+}
+
 .staff-grid-editor {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
