@@ -178,12 +178,14 @@ function SectionListItem({
         <span>{section.staff.length} personer</span>
       </div>
       <div className="section-controls">
-        <button disabled={!canMoveUp} type="button" onClick={onMoveUp}>
-          <ArrowUpIcon />
-        </button>
-        <button disabled={!canMoveDown} type="button" onClick={onMoveDown}>
-          <ArrowDownIcon />
-        </button>
+        <div className="section-reorder-controls">
+          <button disabled={!canMoveUp} type="button" onClick={onMoveUp}>
+            <ArrowUpIcon />
+          </button>
+          <button disabled={!canMoveDown} type="button" onClick={onMoveDown}>
+            <ArrowDownIcon />
+          </button>
+        </div>
         <button
           aria-label={deleteLabel}
           className="section-delete-button"

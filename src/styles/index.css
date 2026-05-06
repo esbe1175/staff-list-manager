@@ -273,12 +273,13 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 0;
   border: 1px solid #dbe1ea;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 0;
   background: white;
   color: var(--app-ink);
+  overflow: hidden;
   text-align: left;
 }
 
@@ -325,6 +326,11 @@ select {
 }
 
 .section-drag-handle {
+  align-self: stretch;
+  width: 34px;
+  height: auto;
+  border-right: 1px solid #e2e8f0;
+  border-radius: 0;
   cursor: grab;
   touch-action: none;
 }
@@ -336,6 +342,7 @@ select {
 .section-title-block {
   min-width: 0;
   flex: 1;
+  padding: 10px 12px;
 }
 
 .section-title-row {
@@ -343,6 +350,15 @@ select {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 4px;
+}
+
+.section-edit-button {
+  margin-right: 2px;
+  opacity: 0.86;
+}
+
+.section-title-row:hover .section-edit-button {
+  opacity: 1;
 }
 
 .section-name-input {
@@ -364,22 +380,38 @@ select {
 
 .section-controls {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-self: stretch;
+  align-items: stretch;
+  gap: 0;
+  border-left: 1px solid #e2e8f0;
 }
 
 .section-controls button {
-  width: 24px;
-  height: 24px;
+  width: 42px;
+  height: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #cbd5e1;
-  border-radius: 5px;
+  border: 0;
+  border-radius: 0;
   background: white;
   cursor: pointer;
   line-height: 1;
   padding: 0;
+}
+
+.section-reorder-controls {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  border-right: 1px solid #e2e8f0;
+}
+
+.section-reorder-controls button + button {
+  border-top: 1px solid #e2e8f0;
+}
+
+.section-controls button:hover:not(:disabled) {
+  background: #f8fafc;
 }
 
 .section-controls svg {
@@ -394,13 +426,11 @@ select {
 }
 
 .section-controls .section-delete-button {
-  border-color: #fecaca;
   color: #b91c1c;
   background: #fef2f2;
 }
 
 .section-controls .section-delete-button:hover:not(:disabled) {
-  border-color: #fca5a5;
   background: #fee2e2;
 }
 
