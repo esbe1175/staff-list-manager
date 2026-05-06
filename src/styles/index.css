@@ -667,6 +667,7 @@ select {
 }
 
 .staff-image-frame {
+  position: relative;
   width: var(--image-width-mm, 24mm);
   height: var(--image-height-mm, 30mm);
   border-radius: 1.7mm;
@@ -677,7 +678,16 @@ select {
 }
 
 .staff-image-frame.is-praktikant {
-  box-shadow: inset 0 0 0 0.42mm var(--document-primary-color, #0969da);
+  box-shadow: none;
+}
+
+.staff-image-frame.is-praktikant::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 0.65mm var(--document-primary-color, #0969da);
+  pointer-events: none;
 }
 
 .staff-image-frame img,
